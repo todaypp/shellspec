@@ -183,6 +183,24 @@ if ( exec {fd}>/dev/null ) 2>/dev/null; then
   echo "SHELLSPEC_FDVAR_AVAILABLE=1"
 fi
 
+# shellcheck disable=SC2039
+if readarray </dev/null 2>/dev/null; then
+  echo "SHELLSPEC_BUILTIN_READARRAY=1"
+fi
+
+if ( eval '{ : <#((0)); } <<<:' ) 2>/dev/null; then
+  echo "SHELLSPEC_SEEKABLE=1"
+fi
+
+line=''
+# shellcheck disable=SC2039
+read -r -d "" line <<'HERE' 2>/dev/null ||:
+a\b
+HERE
+if [ "$line" = 'a\b' ]; then
+  echo "SHELLSPEC_READ_DELIM=1"
+fi
+
 #shellcheck disable=SC2034
 {
   if [ "$({ BASH_XTRACEFD=3; set -x; :; } 2>/dev/null 3>&1)" ]; then
