@@ -13,7 +13,7 @@
 
 set -eu
 
-: "${TARGET:=sh,ash,dash,bash,zsh,pdksh,ksh,ksh93,mksh,oksh,yash,posh,busybox ash}"
+: "${TARGET:=zsh}"
 
 readlinkf() {
   [ ${1:+x} ] || return 1; p=$1; until [ "${p%/}" = "$p" ]; do p=${p%/}; done
