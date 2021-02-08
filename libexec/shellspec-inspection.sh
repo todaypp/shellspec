@@ -206,7 +206,7 @@ a\b
 HERE
 PID=$!
 # shellcheck disable=SC2039
-( read -t 1 -r line ||:; kill -9 "$PID" ||:; exit 2 ) 2>/dev/null &
+( read -t 1 -r line ||:; echo kill >&2; kill -9 "$PID" ||:; echo killed >&2; exit 2 ) &
 if wait "$PID" 2>/dev/null; then
   echo "SHELLSPEC_READ_DELIM=1"
 fi
