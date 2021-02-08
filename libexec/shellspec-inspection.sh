@@ -208,7 +208,10 @@ PID=$!
 # shellcheck disable=SC2039
 ( read -t 1 -r line ||:; echo "kill $PID" >&2; kill -9 "$PID" ||:; echo killed >&2; read -t 1 -r line ||:; /bin/ps ax >&2; exit 2 ) &
 if wait "$PID" 2>/dev/null; then
+echo ok >&2
   echo "SHELLSPEC_READ_DELIM=1"
+else
+echo ng >&2
 fi
 
 #shellcheck disable=SC2034
