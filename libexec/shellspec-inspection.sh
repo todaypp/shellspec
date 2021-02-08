@@ -192,12 +192,19 @@ if ( eval '{ : <#((0)); } <<<:' ) 2>/dev/null; then
   echo "SHELLSPEC_SEEKABLE=1"
 fi
 
-line=''
-# shellcheck disable=SC2039
-read -t 1 -r -d "" line <<'HERE' 2>/dev/null ||:
+
+(
+  line=''
+  # shellcheck disable=SC2039
+  read -r -d "" line 2>/dev/null ||:
+  [ "$line" = 'a\b' ] || exit 1
+) <<'HERE' &
 a\b
 HERE
-if [ "$line" = 'a\b' ]; then
+PID=$!
+# shellcheck disable=SC2039
+( read -t 1 -r line; kill "$PID"; exit 2 ) 2>/dev/null &
+if wait "$PID" 2>/dev/null; then
   echo "SHELLSPEC_READ_DELIM=1"
 fi
 
