@@ -490,6 +490,10 @@ case $SHELLSPEC_MODE in (runner | list)
   fi
 esac
 
+if [ "$SHELLSPEC_READ_DELIM" ]; then
+  echo delim
+fi
+
 [ "$SHELLSPEC_ENV_FROM" ] && exec="load-env" || exec=$SHELLSPEC_MODE
 exec="$SHELLSPEC_LIBEXEC/shellspec-${exec}.sh"
 eval exec "$SHELLSPEC_SHELL" "\"$exec\"" ${1+'"$@"'}
