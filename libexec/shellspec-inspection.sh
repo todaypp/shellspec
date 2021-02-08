@@ -193,6 +193,7 @@ if ( eval '{ : <#((0)); } <<<:' ) 2>/dev/null; then
 fi
 
 
+# Timeout to avoid the issue for zsh stopping for some reason on FreeBSD on CirrusCI
 (
   line=''
   # shellcheck disable=SC2039
@@ -203,7 +204,7 @@ a\b
 HERE
 PID=$!
 # shellcheck disable=SC2039
-( read -t 1 -r line; kill "$PID"; exit 2 ) 2>/dev/null &
+( read -t 1 -r line ||:; kill "$PID" ||:; exit 2 ) 2>/dev/null &
 if wait "$PID" 2>/dev/null; then
   echo "SHELLSPEC_READ_DELIM=1"
 fi
