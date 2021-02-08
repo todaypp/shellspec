@@ -192,14 +192,19 @@ if ( eval '{ : <#((0)); } <<<:' ) 2>/dev/null; then
   echo "SHELLSPEC_SEEKABLE=1"
 fi
 
-#line=''
-## shellcheck disable=SC2039
-#read -r -d "" line <<'HERE' 2>/dev/null ||:
-#a\b
-#HERE
-#if [ "$line" = 'a\b' ]; then
-  echo "SHELLSPEC_READ_DELIM=1"
-#fi
+read_relim() {
+  (
+    line=''
+    # shellcheck disable=SC2039
+    read -r -d "" line 2>/dev/null ||:
+    if [ "$line" = 'a\b' ]; then
+      echo "SHELLSPEC_READ_DELIM=1"
+    fi
+  )
+}
+read_relim <<'HERE'
+a\b
+HERE
 
 #shellcheck disable=SC2034
 {
