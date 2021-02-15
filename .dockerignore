@@ -17,3 +17,5 @@ helper/fixture/stat/*
 !Makefile
 !package.json
 !*.sh
+!accessible-badge-recipes
+
